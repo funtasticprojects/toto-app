@@ -1,0 +1,610 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		981C04F12D2D67E200B69490 /* SwiftSoup in Frameworks */ = {isa = PBXBuildFile; productRef = 981C04F02D2D67E200B69490 /* SwiftSoup */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		981C04C72D2C1AC600B69490 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 981C04AE2D2C1AC400B69490 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 981C04B52D2C1AC400B69490;
+			remoteInfo = TotoScanner;
+		};
+		981C04D12D2C1AC600B69490 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 981C04AE2D2C1AC400B69490 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 981C04B52D2C1AC400B69490;
+			remoteInfo = TotoScanner;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		981C04B62D2C1AC400B69490 /* TotoScanner.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TotoScanner.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		981C04C62D2C1AC600B69490 /* TotoScannerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TotoScannerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		981C04D02D2C1AC600B69490 /* TotoScannerUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TotoScannerUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		981C04E42D2C1BA600B69490 /* Exceptions for "TotoScanner" folder in "TotoScanner" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 981C04B52D2C1AC400B69490 /* TotoScanner */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		981C04B82D2C1AC400B69490 /* TotoScanner */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				981C04E42D2C1BA600B69490 /* Exceptions for "TotoScanner" folder in "TotoScanner" target */,
+			);
+			path = TotoScanner;
+			sourceTree = "<group>";
+		};
+		981C04C92D2C1AC600B69490 /* TotoScannerTests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = TotoScannerTests;
+			sourceTree = "<group>";
+		};
+		981C04D32D2C1AC600B69490 /* TotoScannerUITests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = TotoScannerUITests;
+			sourceTree = "<group>";
+		};
+/* End PBXFileSystemSynchronizedRootGroup section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		981C04B32D2C1AC400B69490 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				981C04F12D2D67E200B69490 /* SwiftSoup in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		981C04C32D2C1AC600B69490 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		981C04CD2D2C1AC600B69490 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		981C04AD2D2C1AC400B69490 = {
+			isa = PBXGroup;
+			children = (
+				981C04B82D2C1AC400B69490 /* TotoScanner */,
+				981C04C92D2C1AC600B69490 /* TotoScannerTests */,
+				981C04D32D2C1AC600B69490 /* TotoScannerUITests */,
+				981C04B72D2C1AC400B69490 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		981C04B72D2C1AC400B69490 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				981C04B62D2C1AC400B69490 /* TotoScanner.app */,
+				981C04C62D2C1AC600B69490 /* TotoScannerTests.xctest */,
+				981C04D02D2C1AC600B69490 /* TotoScannerUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		981C04B52D2C1AC400B69490 /* TotoScanner */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 981C04DA2D2C1AC600B69490 /* Build configuration list for PBXNativeTarget "TotoScanner" */;
+			buildPhases = (
+				981C04B22D2C1AC400B69490 /* Sources */,
+				981C04B32D2C1AC400B69490 /* Frameworks */,
+				981C04B42D2C1AC400B69490 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				981C04B82D2C1AC400B69490 /* TotoScanner */,
+			);
+			name = TotoScanner;
+			packageProductDependencies = (
+				981C04F02D2D67E200B69490 /* SwiftSoup */,
+			);
+			productName = TotoScanner;
+			productReference = 981C04B62D2C1AC400B69490 /* TotoScanner.app */;
+			productType = "com.apple.product-type.application";
+		};
+		981C04C52D2C1AC600B69490 /* TotoScannerTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 981C04DD2D2C1AC600B69490 /* Build configuration list for PBXNativeTarget "TotoScannerTests" */;
+			buildPhases = (
+				981C04C22D2C1AC600B69490 /* Sources */,
+				981C04C32D2C1AC600B69490 /* Frameworks */,
+				981C04C42D2C1AC600B69490 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				981C04C82D2C1AC600B69490 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				981C04C92D2C1AC600B69490 /* TotoScannerTests */,
+			);
+			name = TotoScannerTests;
+			packageProductDependencies = (
+			);
+			productName = TotoScannerTests;
+			productReference = 981C04C62D2C1AC600B69490 /* TotoScannerTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		981C04CF2D2C1AC600B69490 /* TotoScannerUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 981C04E02D2C1AC600B69490 /* Build configuration list for PBXNativeTarget "TotoScannerUITests" */;
+			buildPhases = (
+				981C04CC2D2C1AC600B69490 /* Sources */,
+				981C04CD2D2C1AC600B69490 /* Frameworks */,
+				981C04CE2D2C1AC600B69490 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				981C04D22D2C1AC600B69490 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				981C04D32D2C1AC600B69490 /* TotoScannerUITests */,
+			);
+			name = TotoScannerUITests;
+			packageProductDependencies = (
+			);
+			productName = TotoScannerUITests;
+			productReference = 981C04D02D2C1AC600B69490 /* TotoScannerUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		981C04AE2D2C1AC400B69490 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1610;
+				LastUpgradeCheck = 1610;
+				TargetAttributes = {
+					981C04B52D2C1AC400B69490 = {
+						CreatedOnToolsVersion = 16.1;
+					};
+					981C04C52D2C1AC600B69490 = {
+						CreatedOnToolsVersion = 16.1;
+						TestTargetID = 981C04B52D2C1AC400B69490;
+					};
+					981C04CF2D2C1AC600B69490 = {
+						CreatedOnToolsVersion = 16.1;
+						TestTargetID = 981C04B52D2C1AC400B69490;
+					};
+				};
+			};
+			buildConfigurationList = 981C04B12D2C1AC400B69490 /* Build configuration list for PBXProject "TotoScanner" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 981C04AD2D2C1AC400B69490;
+			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				981C04EF2D2D66DA00B69490 /* XCRemoteSwiftPackageReference "SwiftSoup" */,
+			);
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 981C04B72D2C1AC400B69490 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				981C04B52D2C1AC400B69490 /* TotoScanner */,
+				981C04C52D2C1AC600B69490 /* TotoScannerTests */,
+				981C04CF2D2C1AC600B69490 /* TotoScannerUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		981C04B42D2C1AC400B69490 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		981C04C42D2C1AC600B69490 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		981C04CE2D2C1AC600B69490 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		981C04B22D2C1AC400B69490 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		981C04C22D2C1AC600B69490 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		981C04CC2D2C1AC600B69490 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		981C04C82D2C1AC600B69490 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 981C04B52D2C1AC400B69490 /* TotoScanner */;
+			targetProxy = 981C04C72D2C1AC600B69490 /* PBXContainerItemProxy */;
+		};
+		981C04D22D2C1AC600B69490 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 981C04B52D2C1AC400B69490 /* TotoScanner */;
+			targetProxy = 981C04D12D2C1AC600B69490 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		981C04D82D2C1AC600B69490 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.1;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		981C04D92D2C1AC600B69490 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.1;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		981C04DB2D2C1AC600B69490 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"TotoScanner/Preview Content\"";
+				DEVELOPMENT_TEAM = Y342QKXWY6;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = TotoScanner/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "";
+				INFOPLIST_KEY_NSCameraUsageDescription = "This app needs to take photos of your TOTO ticket.";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "This app allows you to upload a picture of your TOTO ticket.";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.6;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = mu.toto.scanner;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		981C04DC2D2C1AC600B69490 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"TotoScanner/Preview Content\"";
+				DEVELOPMENT_TEAM = Y342QKXWY6;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = TotoScanner/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "";
+				INFOPLIST_KEY_NSCameraUsageDescription = "This app needs to take photos of your TOTO ticket.";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "This app allows you to upload a picture of your TOTO ticket.";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.6;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = mu.toto.scanner;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		981C04DE2D2C1AC600B69490 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.1;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = mu.TotoScannerTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TotoScanner.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/TotoScanner";
+			};
+			name = Debug;
+		};
+		981C04DF2D2C1AC600B69490 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.1;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = mu.TotoScannerTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TotoScanner.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/TotoScanner";
+			};
+			name = Release;
+		};
+		981C04E12D2C1AC600B69490 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = mu.TotoScannerUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = TotoScanner;
+			};
+			name = Debug;
+		};
+		981C04E22D2C1AC600B69490 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = mu.TotoScannerUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = TotoScanner;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		981C04B12D2C1AC400B69490 /* Build configuration list for PBXProject "TotoScanner" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				981C04D82D2C1AC600B69490 /* Debug */,
+				981C04D92D2C1AC600B69490 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		981C04DA2D2C1AC600B69490 /* Build configuration list for PBXNativeTarget "TotoScanner" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				981C04DB2D2C1AC600B69490 /* Debug */,
+				981C04DC2D2C1AC600B69490 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		981C04DD2D2C1AC600B69490 /* Build configuration list for PBXNativeTarget "TotoScannerTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				981C04DE2D2C1AC600B69490 /* Debug */,
+				981C04DF2D2C1AC600B69490 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		981C04E02D2C1AC600B69490 /* Build configuration list for PBXNativeTarget "TotoScannerUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				981C04E12D2C1AC600B69490 /* Debug */,
+				981C04E22D2C1AC600B69490 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		981C04EF2D2D66DA00B69490 /* XCRemoteSwiftPackageReference "SwiftSoup" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/scinfu/SwiftSoup.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.7.6;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		981C04F02D2D67E200B69490 /* SwiftSoup */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 981C04EF2D2D66DA00B69490 /* XCRemoteSwiftPackageReference "SwiftSoup" */;
+			productName = SwiftSoup;
+		};
+/* End XCSwiftPackageProductDependency section */
+	};
+	rootObject = 981C04AE2D2C1AC400B69490 /* Project object */;
+}
