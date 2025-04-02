@@ -101,7 +101,7 @@ struct ScanTicketView: View {
     
         print("nums: \(nums)")
 
-        let res = checkOrdinaryTotoResult(winningNumbers: viewModel.latestWinningNumber?.winningNumbers ?? [], additionalNumber:viewModel.latestWinningNumber?.additionalNumber ?? -1, userNumbers: nums)
+        let res = checkOrdinaryTotoResult(winningNumbers: viewModel.selectedWinningNumber?.winningNumbers ?? [], additionalNumber:viewModel.selectedWinningNumber?.additionalNumber ?? -1, userNumbers: nums)
 
         if (res == nil) {
             finalResult = "you won nothing :("

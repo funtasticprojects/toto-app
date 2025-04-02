@@ -9,6 +9,7 @@ import Foundation
 
 struct TOTOParseResult {
     let drawNumber: String?
+    let drawDate: String?
     let winningNumbers: [Int]
     let additionalNumber: Int?
 }

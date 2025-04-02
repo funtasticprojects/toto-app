@@ -13,6 +13,8 @@ struct ManualEntryView: View {
     @State private var finalResult: String? = nil
     @FocusState private var focusedIndex: Int?
     
+    
+    
     var body: some View {
         VStack(spacing: 20) {
             Text("Enter Your Numbers")
@@ -49,8 +51,8 @@ struct ManualEntryView: View {
                     finalResult = "Numbers must not be duplicated."
                 } else {
                     let res = checkOrdinaryTotoResult(
-                        winningNumbers: viewModel.latestWinningNumber?.winningNumbers ?? [],
-                        additionalNumber: viewModel.latestWinningNumber?.additionalNumber ?? -1,
+                        winningNumbers: viewModel.selectedWinningNumber?.winningNumbers ?? [],
+                        additionalNumber: viewModel.selectedWinningNumber?.additionalNumber ?? -1,
                         userNumbers: nums
                     )
                     
@@ -64,7 +66,21 @@ struct ManualEntryView: View {
             }
         }
         .padding()
+        .onTapGesture {
+            UIApplication.shared.endEditing()
+        }
+        .toolbar {
+            ToolbarItem(placement: .keyboard) {
+                Button("Done") {
+                    UIApplication.shared.endEditing()
+                }
+            }
+        }
     }
-    
-    
+}
+
+extension UIApplication {
+    func endEditing() {
+        sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+    }
 }
