@@ -218,6 +218,9 @@ class TOTOViewModel: ObservableObject {
                 winningNumbers: numbers,
                 additionalNumber: additionalNumber ?? 0
             )
+            
+            selectedWinningNumber = result
+            
    
             if latestWinningNumber == nil {
                 latestWinningNumber = result

@@ -16,6 +16,9 @@ struct ScanTicketView: View {
     @State private var selectedImage: UIImage?
     @State private var finalResult: String? = nil
     
+    @State private var capturedImage: UIImage? = nil
+    
+
     @State private var recognizedText: [String] = []
     @State private var totoTicketType: TotoType? = nil
     
@@ -70,10 +73,11 @@ struct ScanTicketView: View {
         .sheet(isPresented: $isShowingPhotoLibrary) {
             ImagePicker(selectedImage: $selectedImage, sourceType: .photoLibrary)
         }
-        .fullScreenCover(isPresented: $isShowingCamera) {
-            CameraWithOverlayView(selectedImage: $selectedImage, isPresented: $isShowingCamera)
+        .sheet(isPresented: $isShowingCamera) {
+            CameraCaptureView(selectedImage: $selectedImage, isPresented: $isShowingCamera)
         }
     }
+    
     
     func processRecognizedText(recognizedText: [String]) {
         var strs: [String] = []
@@ -97,9 +101,6 @@ struct ScanTicketView: View {
                 nums.append(Int(str)!)
             }
         }
-    
-    
-        print("nums: \(nums)")
 
         let res = checkOrdinaryTotoResult(winningNumbers: viewModel.selectedWinningNumber?.winningNumbers ?? [], additionalNumber:viewModel.selectedWinningNumber?.additionalNumber ?? -1, userNumbers: nums)
 

@@ -21,7 +21,7 @@ struct ResultsView: View {
             ScrollView {
                 VStack(spacing: 20) {
                     drawPicker
-                    if let displayResult = viewModel.selectedWinningNumber == nil ? viewModel.latestWinningNumber : viewModel.selectedWinningNumber {
+                    if let displayResult = viewModel.selectedWinningNumber {
                         latestResultCard(for: displayResult)
                     } else {
                         ProgressView("Fetching latest results...")
