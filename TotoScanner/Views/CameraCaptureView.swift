@@ -9,7 +9,7 @@ import SwiftUI
 import AVFoundation
 
 struct CameraCaptureView: View {
-    @Binding var selectedImage: UIImage?
+    @Binding var capturedImage: UIImage?
     @Binding var isPresented: Bool
 
     @StateObject private var cameraService = CameraService()
@@ -18,10 +18,9 @@ struct CameraCaptureView: View {
 
     var body: some View {
         ZStack {
-            CameraPreview(session: cameraService.session)
+            CameraPreview(session: cameraService.session, videoPreviewLayer: $cameraService.previewLayer)
                 .ignoresSafeArea()
 
-            // Crop Frame Overlay
             GeometryReader { geometry in
                 let width = geometry.size.width * 0.7
                 let height = width
@@ -42,16 +41,14 @@ struct CameraCaptureView: View {
                         .padding(.top, cropRect.minY - 30)
                 }
 
-                // Capture Button
                 VStack {
                     Spacer()
                     Button(action: {
-                        cameraService.capturePhoto(cropRect: cropRect, viewSize: geometry.size) { image in
-                            if let image = image {
-                                previewImage = image
-                                showConfirmation = true
-                            } else {
-                                isPresented = false
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+                            cameraService.capturePhoto(cropRect: cropRect, viewSize: geometry.size) { image in
+                                DispatchQueue.main.async {
+                                    previewImage = image
+                                }
                             }
                         }
                     }) {
@@ -73,11 +70,11 @@ struct CameraCaptureView: View {
             cameraService.stopSession()
         }
         .sheet(isPresented: $showConfirmation) {
-            if let previewImage = previewImage {
-                VStack(spacing: 20) {
-                    Text("Preview")
-                        .font(.headline)
+            VStack(spacing: 20) {
+                Text("Preview")
+                    .font(.headline)
 
+                if let previewImage = previewImage {
                     Image(uiImage: previewImage)
                         .resizable()
                         .scaledToFit()
@@ -90,14 +87,21 @@ struct CameraCaptureView: View {
                         }
 
                         Button("Use Photo") {
-                            selectedImage = previewImage
+                            capturedImage = previewImage
                             showConfirmation = false
                             isPresented = false
                         }
                     }
-                    .padding()
+                } else {
+                    ProgressView("Processing Image...")
+                        .progressViewStyle(CircularProgressViewStyle())
                 }
-                .padding()
+            }
+            .padding()
+        }
+        .onChange(of: previewImage) { newImage in
+            if newImage != nil {
+                showConfirmation = true
             }
         }
     }
@@ -106,6 +110,7 @@ struct CameraCaptureView: View {
 // MARK: - Camera Preview Wrapper
 struct CameraPreview: UIViewRepresentable {
     let session: AVCaptureSession
+    @Binding var videoPreviewLayer: AVCaptureVideoPreviewLayer?
 
     func makeUIView(context: Context) -> UIView {
         let view = UIView(frame: UIScreen.main.bounds)
@@ -113,6 +118,9 @@ struct CameraPreview: UIViewRepresentable {
         previewLayer.videoGravity = .resizeAspectFill
         previewLayer.frame = view.bounds
         view.layer.addSublayer(previewLayer)
+        DispatchQueue.main.async {
+            videoPreviewLayer = previewLayer
+        }
         return view
     }
 
@@ -126,7 +134,8 @@ class CameraService: NSObject, ObservableObject, AVCapturePhotoCaptureDelegate {
     private var photoCaptureCompletion: ((UIImage?) -> Void)?
     private var latestCropRect: CGRect?
     private var latestViewSize: CGSize?
-    
+    @Published var previewLayer: AVCaptureVideoPreviewLayer?
+
     override init() {
         super.init()
         setupSession()
@@ -135,7 +144,6 @@ class CameraService: NSObject, ObservableObject, AVCapturePhotoCaptureDelegate {
     private func setupSession() {
         session.beginConfiguration()
 
-        // Use back camera
         guard let device = AVCaptureDevice.default(.builtInWideAngleCamera, for: .video, position: .back),
               let input = try? AVCaptureDeviceInput(device: device),
               session.canAddInput(input) else {
@@ -181,36 +189,43 @@ class CameraService: NSObject, ObservableObject, AVCapturePhotoCaptureDelegate {
                      error: Error?) {
         guard let imageData = photo.fileDataRepresentation(),
               let fullImage = UIImage(data: imageData) else {
-            photoCaptureCompletion?(nil)
+            DispatchQueue.main.async {
+                self.photoCaptureCompletion?(nil)
+            }
             return
         }
 
         let fixedImage = fixOrientation(of: fullImage)
 
-        if let cropRect = latestCropRect, let viewSize = latestViewSize {
-            let imageSize = fixedImage.size
-
-            let cropXRatio = cropRect.origin.x / viewSize.width
-            let cropYRatio = cropRect.origin.y / viewSize.height
-            let cropWidthRatio = cropRect.size.width / viewSize.width
-            let cropHeightRatio = cropRect.size.height / viewSize.height
-
-            let scaledCropRect = CGRect(
-                x: cropXRatio * imageSize.width,
-                y: cropYRatio * imageSize.height,
-                width: cropWidthRatio * imageSize.width,
-                height: cropHeightRatio * imageSize.height
-            )
-
-            if let cgImage = fixedImage.cgImage,
-               let croppedCGImage = cgImage.cropping(to: scaledCropRect) {
-                let croppedUIImage = UIImage(cgImage: croppedCGImage, scale: fixedImage.scale, orientation: fixedImage.imageOrientation)
-                photoCaptureCompletion?(croppedUIImage)
-            } else {
-                photoCaptureCompletion?(fixedImage)
+        guard let cropRect = latestCropRect,
+              let viewSize = latestViewSize else {
+            DispatchQueue.main.async {
+                self.photoCaptureCompletion?(fixedImage)
             }
-        } else {
-            photoCaptureCompletion?(fixedImage)
+            return
+        }
+
+        let imageSize = fixedImage.size
+        let scaleX = imageSize.width / viewSize.width
+        let scaleY = imageSize.height / viewSize.height
+
+        let scaledCropRect = CGRect(
+            x: cropRect.origin.x * scaleX,
+            y: cropRect.origin.y * scaleY,
+            width: cropRect.size.width * scaleX,
+            height: cropRect.size.height * scaleY
+        )
+
+        let safeCropRect = scaledCropRect.intersection(CGRect(origin: .zero, size: imageSize))
+
+        DispatchQueue.main.async {
+            if let cgImage = fixedImage.cgImage,
+               let croppedCGImage = cgImage.cropping(to: safeCropRect) {
+                let croppedUIImage = UIImage(cgImage: croppedCGImage, scale: fixedImage.scale, orientation: fixedImage.imageOrientation)
+                self.photoCaptureCompletion?(croppedUIImage)
+            } else {
+                self.photoCaptureCompletion?(fixedImage)
+            }
         }
     }
 

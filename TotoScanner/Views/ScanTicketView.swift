@@ -17,7 +17,6 @@ struct ScanTicketView: View {
     @State private var finalResult: String? = nil
     
     @State private var capturedImage: UIImage? = nil
-    
 
     @State private var recognizedText: [String] = []
     @State private var totoTicketType: TotoType? = nil
@@ -74,7 +73,7 @@ struct ScanTicketView: View {
             ImagePicker(selectedImage: $selectedImage, sourceType: .photoLibrary)
         }
         .sheet(isPresented: $isShowingCamera) {
-            CameraCaptureView(selectedImage: $selectedImage, isPresented: $isShowingCamera)
+            CameraCaptureView(capturedImage: $selectedImage, isPresented: $isShowingCamera)
         }
     }
     
