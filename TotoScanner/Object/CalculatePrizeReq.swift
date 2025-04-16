@@ -15,5 +15,3 @@ struct CalculatePrizeReq : Codable {
     let partsPurchased: Int = 1
 }
 
-//{ "numbers": "01,02,08,09,15,22,29", "drawNumber": "4043" , "isHalfBet": "false" , "totalNumberOfParts":"1" , "partsPurchased":"1" }
-
