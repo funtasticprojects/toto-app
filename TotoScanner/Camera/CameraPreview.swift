@@ -21,6 +21,8 @@ struct CameraPreview: UIViewRepresentable {
         DispatchQueue.main.async {
             videoPreviewLayer = previewLayer
         }
+        
+        print("🧩 previewLayer.frame = \(previewLayer.frame)")
         return view
     }
 

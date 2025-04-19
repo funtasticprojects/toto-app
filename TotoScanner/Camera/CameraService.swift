@@ -13,9 +13,9 @@ class CameraService: NSObject, ObservableObject, AVCapturePhotoCaptureDelegate {
     private let output = AVCapturePhotoOutput()
     private var photoCaptureCompletion: ((UIImage?) -> Void)?
     private var latestCropRect: CGRect?
-    private var previewSize: CGSize?
-
+    private var latestViewSize: CGSize?
     @Published var previewLayer: AVCaptureVideoPreviewLayer?
+    @Published var lastScaledCropRect: CGRect?
 
     override init() {
         super.init()
@@ -55,7 +55,7 @@ class CameraService: NSObject, ObservableObject, AVCapturePhotoCaptureDelegate {
 
     func capturePhoto(cropRect: CGRect, viewSize: CGSize, completion: @escaping (UIImage?) -> Void) {
         latestCropRect = cropRect
-        previewSize = viewSize
+        latestViewSize = viewSize
         photoCaptureCompletion = completion
         let settings = AVCapturePhotoSettings()
         output.capturePhoto(with: settings, delegate: self)
@@ -65,29 +65,56 @@ class CameraService: NSObject, ObservableObject, AVCapturePhotoCaptureDelegate {
                      didFinishProcessingPhoto photo: AVCapturePhoto,
                      error: Error?) {
         guard let imageData = photo.fileDataRepresentation(),
-              let fullImage = UIImage(data: imageData),
-              let cropRect = latestCropRect,
-              let previewLayer = previewLayer else {
+                let fullImage = UIImage(data: imageData),
+                let cropRect = latestCropRect,
+                let previewLayer = previewLayer else {
             photoCaptureCompletion?(nil)
             return
         }
 
         let fixedImage = fixOrientation(of: fullImage)
-
-        let normalizedCropRect = previewLayer.metadataOutputRectConverted(fromLayerRect: cropRect)
         let imageSize = fixedImage.size
+        let viewSize = previewLayer.frame.size
+
+        let imageAspect = imageSize.width / imageSize.height
+        let viewAspect = viewSize.width / viewSize.height
+
+        let scale: CGFloat
+        let xOffset: CGFloat
+        let yOffset: CGFloat
+
+        if imageAspect > viewAspect {
+            scale = imageSize.height / viewSize.height
+            let scaledWidth = viewSize.width * scale
+            xOffset = (imageSize.width - scaledWidth) / 2
+            yOffset = 0
+        } else {
+            scale = imageSize.width / viewSize.width
+            let scaledHeight = viewSize.height * scale
+            xOffset = 0
+            yOffset = (imageSize.height - scaledHeight) / 2
+        }
 
         let scaledCropRect = CGRect(
-            x: normalizedCropRect.origin.x * imageSize.width,
-            y: normalizedCropRect.origin.y * imageSize.height,
-            width: normalizedCropRect.size.width * imageSize.width,
-            height: normalizedCropRect.size.height * imageSize.height
-        ).intersection(CGRect(origin: .zero, size: imageSize))
+            x: cropRect.origin.x * scale + xOffset,
+            y: cropRect.origin.y * scale + yOffset,
+            width: cropRect.width * scale,
+            height: cropRect.height * scale
+        )
+
+        let safeCropRect = scaledCropRect.intersection(CGRect(origin: .zero, size: imageSize))
+        self.lastScaledCropRect = safeCropRect
+
+        print("🧩 previewLayer.frame = \(previewLayer.frame)")
+        print("📱 viewSize: \(viewSize)")
+        print("📷 imageSize: \(imageSize)")
+        print("📐 scaledCropRect: \(scaledCropRect)")
+        print("📐 Crop rect (in view): \(String(describing: latestCropRect))")
 
         if let cgImage = fixedImage.cgImage,
-           let cropped = cgImage.cropping(to: scaledCropRect) {
-            let result = UIImage(cgImage: cropped, scale: fixedImage.scale, orientation: fixedImage.imageOrientation)
-            photoCaptureCompletion?(result)
+            let croppedCGImage = cgImage.cropping(to: safeCropRect) {
+            let croppedUIImage = UIImage(cgImage: croppedCGImage, scale: fixedImage.scale, orientation: fixedImage.imageOrientation)
+            photoCaptureCompletion?(croppedUIImage)
         } else {
             photoCaptureCompletion?(fixedImage)
         }

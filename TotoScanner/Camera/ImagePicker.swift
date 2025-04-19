@@ -9,7 +9,7 @@ struct ImagePicker: UIViewControllerRepresentable {
     var sourceType: UIImagePickerController.SourceType = .photoLibrary
     
     // MARK: - UIViewControllerRepresentable Methods
-    
+     
     // 3. Create the UIImagePickerController
     func makeUIViewController(context: Context) -> UIImagePickerController {
         let picker = UIImagePickerController()

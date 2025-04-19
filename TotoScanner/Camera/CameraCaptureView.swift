@@ -70,9 +70,9 @@ struct CameraCaptureView: View {
             cameraService.stopSession()
         }
         .sheet(isPresented: $showConfirmation) {
+
             VStack(spacing: 20) {
-                Text("Preview")
-                    .font(.headline)
+                Text("Preview").font(.headline)
 
                 if let previewImage = previewImage {
                     Image(uiImage: previewImage)
@@ -80,21 +80,21 @@ struct CameraCaptureView: View {
                         .scaledToFit()
                         .frame(height: 300)
                         .cornerRadius(10)
-
-                    HStack(spacing: 30) {
-                        Button("Retake") {
-                            showConfirmation = false
-                        }
-
-                        Button("Use Photo") {
-                            capturedImage = previewImage
-                            showConfirmation = false
-                            isPresented = false
-                        }
-                    }
                 } else {
                     ProgressView("Processing Image...")
                         .progressViewStyle(CircularProgressViewStyle())
+                }
+
+                HStack(spacing: 30) {
+                    Button("Retake") {
+                        showConfirmation = false
+                    }
+
+                    Button("Use Photo") {
+                        capturedImage = previewImage
+                        showConfirmation = false
+                        isPresented = false
+                    }
                 }
             }
             .padding()
@@ -105,4 +105,9 @@ struct CameraCaptureView: View {
             }
         }
     }
+    
+    
+    
+    
+
 }
