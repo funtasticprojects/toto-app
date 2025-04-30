@@ -22,12 +22,13 @@ struct ScanTicketView: View {
     @State private var totoTicketType: TotoType? = nil
     
     @State private var debugPreprocessedImage: UIImage? = nil
-    @State private var contrastLevel: Double = 1.2
+    @State private var contrastLevel: Double = 2.3
     
     @State private var hueMin: Float = 10
     @State private var hueMax: Float = 25
-    @State private var saturationThreshold: Float = 0.2
-    @State private var brightnessThreshold: Float = 0.85
+    @State private var brightnessThreshold: Float = 0.4
+    @State private var saturationThreshold: Float = 0.4
+
 
     
     var body: some View {
@@ -42,7 +43,7 @@ struct ScanTicketView: View {
                     print("running ORC")
                     if let original = capturedImage {
                         print("before applyVImageThreshold")
-                        let preprocessed = preprocessForOCR(original, contrast: contrastLevel) ?? original
+                        let preprocessed = preprocessForOCR(original) ?? original
                         print("after applyVImageThreshold")
                         debugPreprocessedImage = preprocessed // <--- Add this line
                         print("after preprocessing")
@@ -64,57 +65,30 @@ struct ScanTicketView: View {
                 .padding()
 
                 
-                if let debugImage = debugPreprocessedImage {
-                    VStack(spacing: 8) {
-                        Text("🔍 Preprocessed Image for OCR")
-                            .font(.caption)
-                            .foregroundColor(.gray)
-                        Image(uiImage: debugImage)
-                            .resizable()
-                            .scaledToFit()
-                            .frame(height: 200)
-                            .border(Color.red, width: 1)
-                        
-                        // 🔧 Contrast Slider
-                        VStack {
-                            Text("Contrast: \(String(format: "%.2f", contrastLevel))")
-                            Slider(value: $contrastLevel, in: 0.5...3.0, step: 0.1)
-                                .padding(.horizontal)
-                                .onChange(of: contrastLevel) { _ in
-                                    if let original = capturedImage {
-                                        debugPreprocessedImage = preprocessForOCR(original, contrast: contrastLevel)
-                                    }
-                                }
-                        }
-                    }
-                    
-                    Group {
-                        Text("🎯 Red Filter Settings")
-                            .font(.caption).bold()
-                            .padding(.top)
-
-                        HStack {
-                            Text("Hue Min: \(Int(hueMin))")
-                            Slider(value: $hueMin, in: 0...360, step: 1)
-                        }
-
-                        HStack {
-                            Text("Hue Max: \(Int(hueMax))")
-                            Slider(value: $hueMax, in: 0...360, step: 1)
-                        }
-
-                        HStack {
-                            Text("Saturation > \(String(format: "%.2f", saturationThreshold))")
-                            Slider(value: $saturationThreshold, in: 0...1, step: 0.05)
-                        }
-
-                        HStack {
-                            Text("Brightness > \(String(format: "%.2f", brightnessThreshold))")
-                            Slider(value: $brightnessThreshold, in: 0...1, step: 0.05)
-                        }
-                    }
-                    .padding(.horizontal)
-                }
+//                if let debugImage = debugPreprocessedImage {
+//                    VStack(spacing: 8) {
+//                        Text("🔍 Preprocessed Image for OCR")
+//                            .font(.caption)
+//                            .foregroundColor(.gray)
+//                        Image(uiImage: debugImage)
+//                            .resizable()
+//                            .scaledToFit()
+//                            .frame(height: 200)
+//                            .border(Color.red, width: 1)
+//                        
+//                        // 🔧 Contrast Slider
+//                        VStack {
+//                            Text("Contrast: \(String(format: "%.2f", contrastLevel))")
+//                            Slider(value: $contrastLevel, in: 0.5...3.0, step: 0.1)
+//                                .padding(.horizontal)
+//                                .onChange(of: contrastLevel) { _ in
+//                                    if let original = capturedImage {
+//                                        debugPreprocessedImage = preprocessForOCR(original)
+//                                    }
+//                                }
+//                        }
+//                    }
+//                }
 
                 
             } else {
@@ -198,29 +172,19 @@ struct ScanTicketView: View {
     }
 
 
-    func preprocessForOCR(_ image: UIImage, contrast: Double) -> UIImage? {
-        guard let cleaned = removeRedPixels(
-            from: image,
-            hueMin: hueMin,
-            hueMax: hueMax,
-            saturationThreshold: saturationThreshold,
-            brightnessThreshold: brightnessThreshold
-        ) else { return nil }
-
-        return enhanceContrast(cleaned, contrast: contrast)
+    func preprocessForOCR(_ image: UIImage) -> UIImage? {
+        if let cleaned = removeColorPixelsExceptBlack(from: image, brightnessThreshold: brightnessThreshold, saturationThreshold: saturationThreshold) {
+            return enhanceContrast(cleaned, contrast: contrastLevel)
+        }
+        return nil
     }
 
-    
-    
+
+
 
     
-    func removeRedPixels(
-        from image: UIImage,
-        hueMin: Float,
-        hueMax: Float,
-        saturationThreshold: Float,
-        brightnessThreshold: Float
-    ) -> UIImage? {
+    
+    func removeColorPixelsExceptBlack(from image: UIImage, brightnessThreshold: Float = 0.4, saturationThreshold: Float = 0.3) -> UIImage? {
         guard let inputCGImage = image.cgImage else { return nil }
         let width = inputCGImage.width
         let height = inputCGImage.height
@@ -228,8 +192,8 @@ struct ScanTicketView: View {
         let bytesPerRow = bytesPerPixel * width
         let bitsPerComponent = 8
 
-        guard let colorSpace = CGColorSpace(name: CGColorSpace.sRGB) else { return nil }
-        guard let context = CGContext(data: nil,
+        guard let colorSpace = CGColorSpace(name: CGColorSpace.sRGB),
+              let context = CGContext(data: nil,
                                       width: width,
                                       height: height,
                                       bitsPerComponent: bitsPerComponent,
@@ -250,21 +214,14 @@ struct ScanTicketView: View {
                 let g = Float(pixelBuffer[offset + 1])
                 let b = Float(pixelBuffer[offset + 2])
 
-                var hue: Float = 0, sat: Float = 0, bri: Float = 0
-                rgbToHsv(r: r, g: g, b: b, h: &hue, s: &sat, v: &bri)
+                var h: Float = 0, s: Float = 0, v: Float = 0
+                rgbToHsv(r: r, g: g, b: b, h: &h, s: &s, v: &v)
 
-                // Optional: Sample print
-                if y % 200 == 0 && x % 200 == 0 {
-                    print("🎨 H:\(Int(hue)) S:\(String(format: "%.2f", sat)) B:\(String(format: "%.2f", bri))")
-                }
-
-                // Filter reddish hue
-                let isRed = (hue >= hueMin && hue <= hueMax)
-                if isRed && sat > saturationThreshold && bri > brightnessThreshold {
-                    // Replace reddish pixel with white
-                    pixelBuffer[offset + 0] = 255
-                    pixelBuffer[offset + 1] = 255
-                    pixelBuffer[offset + 2] = 255
+                // Keep only dark, desaturated pixels (i.e. black or dark gray)
+                if v > brightnessThreshold || s > saturationThreshold {
+                    pixelBuffer[offset + 0] = 255 // R
+                    pixelBuffer[offset + 1] = 255 // G
+                    pixelBuffer[offset + 2] = 255 // B
                 }
             }
         }
@@ -272,6 +229,7 @@ struct ScanTicketView: View {
         guard let outputCGImage = context.makeImage() else { return nil }
         return UIImage(cgImage: outputCGImage, scale: image.scale, orientation: image.imageOrientation)
     }
+
 
     
     func rgbToHsv(r: Float, g: Float, b: Float, h: inout Float, s: inout Float, v: inout Float) {
@@ -295,6 +253,7 @@ struct ScanTicketView: View {
         h *= 60
         if h < 0 { h += 360 }
     }
+
 
 
     
