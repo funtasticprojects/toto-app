@@ -22,12 +22,12 @@ struct ScanTicketView: View {
     @State private var totoTicketType: TotoType? = nil
     
     @State private var debugPreprocessedImage: UIImage? = nil
-    @State private var contrastLevel: Double = 2.3
+    @State private var contrastLevel: Double = 3
     
     @State private var hueMin: Float = 10
     @State private var hueMax: Float = 25
-    @State private var brightnessThreshold: Float = 0.4
-    @State private var saturationThreshold: Float = 0.4
+    @State private var brightnessThreshold: Float = 0.60
+    @State private var saturationThreshold: Float = 1
 
 
     
@@ -39,13 +39,63 @@ struct ScanTicketView: View {
                     .scaledToFit()
                     .frame(height: 300)
                 
+                
+                if let debugImage = debugPreprocessedImage {
+                    VStack(spacing: 8) {
+                        Text("🔍 Preprocessed Image for OCR")
+                            .font(.caption)
+                            .foregroundColor(.gray)
+                        Image(uiImage: debugImage)
+                            .resizable()
+                            .scaledToFit()
+                            .frame(height: 200)
+                            .border(Color.red, width: 1)
+                        
+                        // 🔧 Contrast Slider
+                        VStack {
+                            Text("Contrast: \(String(format: "%.2f", contrastLevel))")
+                            Slider(value: $contrastLevel, in: 0.5...3.0, step: 0.1)
+                                .padding(.horizontal)
+                                .onChange(of: contrastLevel) { _ in
+                                    if let original = capturedImage {
+                                        debugPreprocessedImage = preprocessForOCR(original)
+                                    }
+                                }
+                        }
+                        Group {
+                            VStack(alignment: .leading, spacing: 8) {
+                                Text("🎛 Brightness Threshold: \(String(format: "%.2f", brightnessThreshold))")
+                                Slider(value: $brightnessThreshold, in: 0.0...1.0, step: 0.05)
+                            }
+
+                            VStack(alignment: .leading, spacing: 8) {
+                                Text("🎛 Saturation Threshold: \(String(format: "%.2f", saturationThreshold))")
+                                Slider(value: $saturationThreshold, in: 0.0...1.0, step: 0.05)
+                            }
+                        }
+                        .padding(.horizontal)
+                        .onChange(of: brightnessThreshold) { _ in
+                            if let original = capturedImage {
+                                debugPreprocessedImage = preprocessForOCR(original)
+                            }
+                        }
+                        .onChange(of: saturationThreshold) { _ in
+                            if let original = capturedImage {
+                                debugPreprocessedImage = preprocessForOCR(original)
+                            }
+                        }
+                    }
+                }
+                
+                
+                
                 Button("Run OCR") {
                     print("running ORC")
                     if let original = capturedImage {
                         print("before applyVImageThreshold")
                         let preprocessed = preprocessForOCR(original) ?? original
                         print("after applyVImageThreshold")
-                        debugPreprocessedImage = preprocessed // <--- Add this line
+                        debugPreprocessedImage = preprocessed //
                         print("after preprocessing")
                         
                         runOCR(on: preprocessed) { result in
@@ -63,33 +113,6 @@ struct ScanTicketView: View {
                     }
                 }
                 .padding()
-
-                
-//                if let debugImage = debugPreprocessedImage {
-//                    VStack(spacing: 8) {
-//                        Text("🔍 Preprocessed Image for OCR")
-//                            .font(.caption)
-//                            .foregroundColor(.gray)
-//                        Image(uiImage: debugImage)
-//                            .resizable()
-//                            .scaledToFit()
-//                            .frame(height: 200)
-//                            .border(Color.red, width: 1)
-//                        
-//                        // 🔧 Contrast Slider
-//                        VStack {
-//                            Text("Contrast: \(String(format: "%.2f", contrastLevel))")
-//                            Slider(value: $contrastLevel, in: 0.5...3.0, step: 0.1)
-//                                .padding(.horizontal)
-//                                .onChange(of: contrastLevel) { _ in
-//                                    if let original = capturedImage {
-//                                        debugPreprocessedImage = preprocessForOCR(original)
-//                                    }
-//                                }
-//                        }
-//                    }
-//                }
-
                 
             } else {
                 Rectangle()
@@ -136,18 +159,38 @@ struct ScanTicketView: View {
         print(strs)
     
     
+        
         totoTicketType = deriveTotoType(recognizedText: strs)
-        if (totoTicketType == nil) {
-
-        }
-    
-        var nums: [Int] = []
-        for str in strs {
-            if (isInt(str: str)) {
-                nums.append(Int(str)!)
-            }
+        
+        if let type = totoTicketType {
+            print("totoTicketType: \(type.rawValue)")
+        } else {
+            finalResult = "Unable to process the ticket "
+            return
         }
 
+        let numOfSet = (totoTicketType == .ordinary) ? 6 : 7
+        let sets = extractNumberSets(from: strs, expectedCount: numOfSet)
+        print("sets: \(sets)")
+        
+        // Fallback if no sets found
+        if sets.isEmpty {
+            finalResult = "OCR failed :( please retake the photo"
+            return
+        }
+        
+        
+        
+        if let drawIndex = strs.firstIndex(of: "DRAW:"),
+           recognizedText.count > drawIndex + 2 {
+            let drawDateString = recognizedText[drawIndex + 2] // e.g., "31/03/25"
+            print("🗓 Draw date = \(drawDateString)")
+        }
+
+        
+        
+        
+        let nums = sets.first ?? []
         let res = checkOrdinaryTotoResult(winningNumbers: viewModel.selectedWinningNumber?.winningNumbers ?? [], additionalNumber:viewModel.selectedWinningNumber?.additionalNumber ?? -1, userNumbers: nums)
 
         if (res == nil) {
@@ -156,6 +199,78 @@ struct ScanTicketView: View {
             finalResult = "you won \(res!.description)!"
         }
     }
+    
+
+
+
+
+    func extractNumberSets(from text: [String], expectedCount: Int) -> [[Int]] {
+        var results: [[Int]] = []
+        var current: [Int] = []
+        var collecting = false
+
+        for token in text {
+            let upperToken = token.uppercased()
+
+            // Early-stop keywords
+            let stopWords = ["PRICE:", "DRAW:", "QP"]
+
+            // Detect and split merged label+number, like "A.23", "1.45"
+            if let match = token.range(of: #"^([A-Za-z0-9])\.(\d+)$"#, options: .regularExpression) {
+                if !current.isEmpty, current.count == expectedCount {
+                    results.append(current)
+                }
+                current = []
+                collecting = true
+                let numberPart = String(token[match].split(separator: ".")[1])
+                if let num = Int(numberPart) {
+                    current.append(num)
+                }
+                continue
+            }
+
+            // New line like "A.", "B.", "1."
+            if token.count == 2 && token.last == "." &&
+                (token.first?.isLetter == true || token.first?.isNumber == true) {
+                if current.count == expectedCount {
+                    results.append(current)
+                }
+                current = []
+                collecting = true
+                continue
+            }
+
+            // STOP collecting if we hit a known keyword
+            if collecting && stopWords.contains(upperToken) {
+                collecting = false
+                if current.count == expectedCount {
+                    results.append(current)
+                }
+                current = []
+                continue
+            }
+
+            if collecting, let num = Int(token) {
+                current.append(num)
+                if current.count == expectedCount {
+                    results.append(current)
+                    current = []
+                    collecting = false
+                }
+            }
+        }
+
+        // Final check at end
+        if current.count == expectedCount {
+            results.append(current)
+        }
+
+        return results
+    }
+
+
+
+
     
     
     func isInt(str: String) -> Bool {
