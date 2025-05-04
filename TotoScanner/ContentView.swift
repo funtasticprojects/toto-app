@@ -74,6 +74,54 @@ func checkOrdinaryTotoResult(
     }
 }
 
+func checkSystem7TotoResult(
+    winningNumbers: [Int],
+    additionalNumber: Int,
+    userNumbers: [Int]
+) -> Int? {
+    guard userNumbers.count == 7 else {
+        return nil // Not a valid System 7 entry
+    }
+
+    let combinations = generateCombinations(of: userNumbers, choose: 6)
+    var bestPrize: Int? = nil
+
+    for combo in combinations {
+        if let prize = checkOrdinaryTotoResult(
+            winningNumbers: winningNumbers,
+            additionalNumber: additionalNumber,
+            userNumbers: combo
+        ) {
+            if let currentBest = bestPrize {
+                bestPrize = min(currentBest, prize) // lower group number = better prize
+            } else {
+                bestPrize = prize
+            }
+        }
+    }
+
+    return bestPrize
+}
+
+func generateCombinations(of elements: [Int], choose k: Int) -> [[Int]] {
+    guard k <= elements.count else { return [] }
+    var result: [[Int]] = []
+    
+    func combine(_ start: Int, _ current: [Int]) {
+        if current.count == k {
+            result.append(current)
+            return
+        }
+        for i in start..<elements.count {
+            combine(i + 1, current + [elements[i]])
+        }
+    }
+
+    combine(0, [])
+    return result
+}
+
+
 #Preview {
     MainView()
 }

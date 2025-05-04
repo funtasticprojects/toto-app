@@ -185,14 +185,26 @@ struct ScanTicketView: View {
            recognizedText.count > drawIndex + 2 {
             let drawDateString = recognizedText[drawIndex + 2] // e.g., "31/03/25"
             print("🗓 Draw date = \(drawDateString)")
-        }
-
-        
-        
+                
         
         let nums = sets.first ?? []
-        let res = checkOrdinaryTotoResult(winningNumbers: viewModel.selectedWinningNumber?.winningNumbers ?? [], additionalNumber:viewModel.selectedWinningNumber?.additionalNumber ?? -1, userNumbers: nums)
+        
 
+        let winningNumbers = viewModel.selectedWinningNumber?.winningNumbers ?? []
+        let additionalNumber = viewModel.selectedWinningNumber?.additionalNumber ?? -1
+
+        let res: Int? = {
+            switch totoTicketType {
+            case .ordinary:
+                return checkOrdinaryTotoResult(winningNumbers: winningNumbers, additionalNumber: additionalNumber, userNumbers: nums)
+            case .system7:
+                return checkSystem7TotoResult(winningNumbers: winningNumbers, additionalNumber: additionalNumber, userNumbers: nums)
+            default:
+                return nil
+            }
+        }()
+
+            
         if (res == nil) {
             finalResult = "you won nothing :("
         } else {
@@ -200,9 +212,6 @@ struct ScanTicketView: View {
         }
     }
     
-
-
-
 
     func extractNumberSets(from text: [String], expectedCount: Int) -> [[Int]] {
         var results: [[Int]] = []
